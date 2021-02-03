@@ -339,11 +339,19 @@ static gint show_morph(const char *module_name,
 
 	/*
 	  why is this not compiling ?
-	 /home/fedora/dev/xiphos/src/main/url.cc:341:34: error: invalid conversion from ‘int’ to ‘GRegexMatchFlags’ [-fpermissive]
-	  341 |  regex = g_regex_new ("text", 0, 0 ,  &err);
-	        |                                  ^ 
-		|                                  | 
-		|                                  int
+	/usr/include/glib-2.0/glib/gregex.h:448:29: note:   initializing argument 2 of ‘GRegex* g_regex_new(const gchar*, GRegexCompileFlags, GRegexMatchFlags, GError**)’
+	  448 |        GRegexCompileFlags   compile_options,
+	      |        ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+	/home/fedora/dev/xiphos/src/main/url.cc:357:34: error: invalid conversion from ‘int’ to ‘GRegexMatchFlags’ [-fpermissive]
+          357 |  regex = g_regex_new ("text", 0, 0 ,  &err);
+	      |                                  ^
+	      |                                  int
+
+
+
+	The exemple comes from https://lzone.de/examples/Glib%20GRegex
+	I dont understand why 0 is not valid, the doc mention it is a valid entry for those 2 arguments:
+	https://developer.gnome.org/glib/stable/glib-Perl-compatible-regular-expressions.html#g-regex-new
 	*/
 
 	regex = g_regex_new ("text", 0, 0 ,  &err);
