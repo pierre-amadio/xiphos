@@ -308,8 +308,30 @@ static gint show_morph(const char *module_name,
 		       const gchar *svalue,
 		       gboolean clicked)
 {
+	/*
+	 * Problem: this code does not get the right morph code content 
+	 * as it does not select the right sword module to use (it does not even try for hebrew oshm)
+	 * 
+	 *
+	 * with LXX : stype="packard:N1 DSF" svalue="N1" (stype should be "packard" and svalue "N1")
+	 * with MorphGNT: stype="robinson:N-NSF" svalue="N-NSF"
+	 * with OSHB: stype="oshm:HC/To" svalue="HC/To"
+	 *
+	 * Bear in mind the packaged morph code do have space in them.
+	 * The easiest way to be able to detect wich morph module to use would be to look only at the 
+	 * stype information as it show the morph code method and the full code
+	 * (notice that for packard code, the svalue is wrong).
+	 *
+	 * Ideally the code that genrate the url (file:///passagestudy.jsp?action=showMorph&type=packard%3ARA+NSM&value=RA)
+	 * should get the right stype and svalue but it is too complex for me to undertand clearly and fix.
+	 *
+	 */
 	const gchar *modbuf = NULL;
+	g_message("Test message");
 
+	XI_message(("COIN"));
+	g_message("stype=%s",stype);
+	g_message("svalue = %s", svalue);
 	if (!strcmp(stype, "Greek") ||
 	    strstr(stype, "x-Robinson") ||
 	    strstr(stype, "robinson") ||
@@ -942,7 +964,10 @@ gint main_url_handler(const gchar *url, gboolean clicked)
 		if (!strcmp(action, "showStrongs")) {
 			show_strongs(stype, svalue, clicked);
 		}
-
+		/*
+		 *
+		 * url="file:///passagestudy.jsp?action=showMorph&type=packard%3ARA+NSM&value=RA"
+		 */
 		else if (!strcmp(action, "showMorph")) {
 			show_morph(module, stype, svalue, clicked);
 		}
