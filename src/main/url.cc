@@ -37,7 +37,6 @@
 
 #include <gtk/gtk.h>
 #include <glib/gstdio.h>
-
 #ifdef USE_WEBKIT_EDITOR
 #include "editor/webkit_editor.h"
 #else
@@ -332,7 +331,27 @@ static gint show_morph(const char *module_name,
 	XI_message(("COIN"));
 	g_message("stype=%s",stype);
 	g_message("svalue = %s", svalue);
-	
+
+
+	GError *err = NULL;
+	GMatchInfo *matchInfo;
+	GRegex *regex;
+
+	/*
+	  why is this not compiling ?
+	 /home/fedora/dev/xiphos/src/main/url.cc:341:34: error: invalid conversion from ‘int’ to ‘GRegexMatchFlags’ [-fpermissive]
+	  341 |  regex = g_regex_new ("text", 0, 0 ,  &err);
+	        |                                  ^ 
+		|                                  | 
+		|                                  int
+	*/
+
+	regex = g_regex_new ("text", 0, 0 ,  &err);
+
+	//regex = g_regex_new ("^packard:(.*)$ ", G_REGEX_CASELESS, 0, &err);
+	//g_regex_match (regex, "Some text to match", NULL, &matchInfo);
+
+
 	if(strcmp(stype, "Greek") ||
 			strstr(stype, "x-Robinson") ||
 			strstr(stype, "robinson") ||
