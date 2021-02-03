@@ -332,6 +332,41 @@ static gint show_morph(const char *module_name,
 	XI_message(("COIN"));
 	g_message("stype=%s",stype);
 	g_message("svalue = %s", svalue);
+	
+	if(strcmp(stype, "Greek") ||
+			strstr(stype, "x-Robinson") ||
+			strstr(stype, "robinson") ||
+			strstr(stype, "Robinson")) {
+		/* Robinson morph code */
+		g_message("Let s use robinson");
+		if (backend->is_module("Robinson")){
+				modbuf = "Robinson";
+		} else { return 1;}
+	}
+
+	if(strcmp(stype, "Packard")){
+		/* Packard morph code */
+		g_message("Let s use Packard");
+		if (backend->is_module("Packard")){
+				modbuf = "Packard";
+		} else { return 1;}
+	}
+
+	if(strcmp(stype, "oshm")){
+		/* Hebrew morph code */
+		g_message("Let s use OSHM");
+		if (backend->is_module("OSHM")){
+				modbuf = "OSHM";
+		} else { return 1;}
+	}
+
+
+
+	g_message("morph module=%s",modbuf);
+
+
+/*
+
 	if (!strcmp(stype, "Greek") ||
 	    strstr(stype, "x-Robinson") ||
 	    strstr(stype, "robinson") ||
@@ -361,7 +396,7 @@ static gint show_morph(const char *module_name,
 						NULL);
 			g_free(mybuf);
 		}
-	}
+	} */
 	return 1;
 }
 
